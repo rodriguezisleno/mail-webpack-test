@@ -1,15 +1,34 @@
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { InlineCssPlugin, template, createEntry, createTemplateParameters } = require('./webpack_utils');
 
-module.exports = (env) => {
+const webpackConfig = (env) => {
+  const { webpackEntry, templates } = createEntry({ src: './src/templates' });
+
   return {
     mode: 'production',
-    entry: path.resolve(__dirname, 'src/index.js'),
+    entry: webpackEntry,
     output: {
-      path: path.resolve(__dirname, 'dist'),
-      filename: 'index.js',
+      filename: '[name].js',
+      path: path.resolve(__dirname, 'dist', 'trash'),
+      libraryTarget: 'commonjs2',
     },
     module: {
       rules: [
+        {
+          test: /src\/.*\.scss$/i,
+          use: [
+            {
+              loader: 'file-loader',
+              options: {
+                name: '[path][name].css'
+              }
+            },
+            'extract-loader',
+            'css-loader',
+            'sass-loader',
+          ],
+        },
         {
           test: /src\/.*\.js$/,
           exclude: /node_modules/,
@@ -21,7 +40,7 @@ module.exports = (env) => {
               }
             },
             {
-              loader: path.resolve(__dirname, 'loader.js'),
+              loader: path.resolve(__dirname, 'webpack_utils/reactRenderLoader.js'),
               options: {
                 env,
               }
@@ -35,6 +54,20 @@ module.exports = (env) => {
           ]
         }
       ]
-    }
+    },
+    plugins: [
+      new InlineCssPlugin(),
+      // the htmlWebpackPlugin requires one instance for each template
+      ...templates.map((templateName) => (
+        new HtmlWebpackPlugin({
+          filename: path.resolve(__dirname, 'dist', `final_template_${templateName}.html`),
+          inject: false,
+          templateContent: template,
+          templateParameters: createTemplateParameters(templateName),
+        })
+      )),
+    ],
   };
 }
+
+module.exports = webpackConfig;

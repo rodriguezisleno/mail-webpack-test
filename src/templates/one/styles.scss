@@ -1,0 +1,22 @@
+.template-one {
+  color: black;
+  display: flex;
+
+  &--white {
+    color: white;
+  }
+
+  .inner-div {
+    margin: 200px;
+  }
+}
+
+@media (max-width: 420px) {
+  .template-one {
+    flex-direction: column;
+
+    .inner-div {
+      margin: 30px;
+    }
+  }
+}
