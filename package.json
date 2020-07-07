@@ -4,6 +4,9 @@
   "description": "project to test random thoughts",
   "main": "index.js",
   "scripts": {
+    "i18n:gettext": "i18n gettext",
+    "i18n:upload": "i18n upload",
+    "i18n:download": "i18n download --path ./translations",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "goexrois@gmail.com",
@@ -26,6 +29,7 @@
     "html-webpack-inline-style-plugin": "^0.2.0",
     "html-webpack-plugin": "^4.3.0",
     "loader-utils": "^2.0.0",
+    "nordic": "6.2.0",
     "raw-loader": "^4.0.1",
     "react-dom": "^16.13.1",
     "require-from-string": "^2.0.2",

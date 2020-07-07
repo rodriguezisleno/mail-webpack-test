@@ -20,7 +20,7 @@ module.exports = function loader(source) {
   const module = requireFromString(code, this.resourcePath);
   console.log('module', module);
 
-  const component = module(env);
+  const component = module(env, 'MLB');
   console.log('component', component);
 
   const renderedComponent = renderer.renderToStaticMarkup(component)
